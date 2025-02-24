@@ -1,0 +1,188 @@
+<%- include('header') %>
+        <div id="user-info-div" style="top: -500px;">
+            <% if(!username) { %>
+                <div class="user-info-item" id="login" onclick="login()"><span>로그인</span></div>
+            <% } else { %>
+                <div class="user-info-item" id="logout" onclick="logout()" user-id="<%= username %>"><span>로그아웃</span></div>
+                <div class="user-info-item" id="my-page" onclick="myPage(`<%= username %>`)"><span id="my-page-text">나의 글</span></div>
+                <div class="user-info-item" user-id="<%= username %>" onclick="userProfile(this)">내 프로필</div>
+                <script>
+                    window.userId = `<%= username %>`;
+                </script>
+            <% } %>
+        </div>
+        <% if(username) { %>
+            <div class="user-profile-page" id="user-profile-page">
+                <div class="page-div">
+                    <div class="page-user-id"><div class="page-my-id-text"><%= username %></div></div>
+                    <div class="page-my-post">
+                        <div class="page-user-post-text">글 목록</div>
+                        <ul class="page-user-post-list" id="page-my-post-list">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+
+        <div class="user-post-list-page" id="user-post-list-page">
+            <div id="user-post-list-exit" onclick="exit(this)">X</div>
+            <div class="page-div">
+                <div class="page-user-id"><div class="page-user-id-text"></div></div>
+                <div class="page-user-post">
+                    <div class="page-user-post-text">글 목록</div>
+                    <ul class="page-user-post-list" id="page-user-post-list">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        
+
+        <div class="post-update-modal">
+            <div class="post-update-modal-header">
+                <div class="post-update-title">글 수정하기</div>
+                <div id="post-update-modal-exit" onclick="exit(this)">x</div>
+            </div>
+            <div class="text-area"><textarea name="" id="update-text" cols="30" rows="10" placeholder="글 수정"></textarea></div>
+            <div id="post-update-done-div"><div id="post-update-done" onclick="postUpdate(this)">완료</div></div>
+        </div>
+
+
+
+
+
+
+        <div class="contents">
+            <!-- <%= username %> -->
+            <% if(!username) { %>
+                <!-- <div style="position: fixed; left: 10%"><form action="/llogin" method="post"><button> admin로그인</button></form></div> -->
+            <% } else { %>
+                <!-- <div style="position: fixed; left: 0"><form action="/clear-session" method="get"><button>로그아웃</button></form></div> -->
+            <% } %>
+            <% let idx = 0;
+            for(let i=0; i<cnt; i++) { %>
+            <% let cur = idx %>
+            <% let userId = user.find(u => u.user_no == post[cur].user_no)?.id ? user.find(u => u.user_no == post[cur].user_no)?.id : "NULL" %>
+            <div class="item" post-no="<%= post[cur].post_no %>">
+                <div class="item-header">
+                    <div class="item-profile">
+                        <div class="profile-wrapper">
+                            <div class="profile-picture">
+                                <img src="<%= user.find(u => u.user_no == post[cur].user_no)?.profile || 'default.png' %>">
+                            </div>
+                        </div>
+                        <%= userId %>
+                    </div>
+                    <div>
+                        <svg aria-label="옵션 더 보기" class="icon" fill="currentColor" height="24" post-no="<%= post[cur].post_no %>" onclick="openPostOption(this)"
+                            role="img" viewBox="0 0 24 24" width="24">
+                            <title>옵션 더 보기</title>
+                            <circle cx="12" cy="12" r="1.5"></circle>
+                            <circle cx="6" cy="12" r="1.5"></circle>
+                            <circle cx="18" cy="12" r="1.5"></circle>
+                        </svg>
+                        <div class="post-option-div" post-no="<%= post[cur].post_no %>">
+                            <div class="post-option-box">
+                                <% if(username == userId) { %>
+                                    <div class="post-option-item user-profile" user-id="<%= userId %>" onclick="userProfile(this)">내 프로필</div>
+                                    <div class="post-option-item post-update" post-no="<%= post[cur].post_no %>"  user-id="<%= userId %>" onclick="openPostUpdate(this, `<%= post[cur].post_no %>`)">수정</div>
+                                    <div class="post-option-item post-delete" post-no="<%= post[cur].post_no %>"  user-id="<%= userId %>" onclick="postDelete(this)">삭제</div>
+                                <% } else { %>
+                                    <div class="post-option-item user-profile" user-id="<%= userId %>" onclick="userProfile(this)">유저 프로필</div>
+                                    <div class="post-option-item user-comment-list" user-id="<%= userId %>" onclick="openUserCommentList(this)">유저의 다른 글</div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-body">
+                    <div class="swiper">
+                        <div class="swiper-wrapper">
+                            <% let range = idx+groupBy[i]['count(*)']
+                                for(;idx<range;idx++){ %>
+                                <div class="swiper-slide">
+                                    <img src="<%= post[cur].filename %>" alt="<%= post[cur].filename %>">
+                                </div>
+                            <% } %>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                </div>
+                <div class="item-footer">
+                    <svg aria-label="좋아요" class="like icon <% if(like.find(x => x.post_no == post[cur].post_no)) { %> likeit <% } %>" height="24" role="img" 
+                        viewBox="0 0 24 24" width="24" onclick="likeit(<%= post[cur].post_no %>, this)">
+                        <title>좋아요</title>
+                        <path
+                            d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z">
+                        </path>
+                    </svg>
+                    <svg aria-label="댓글 달기" class="comment icon" height="24" role="img" onclick="openCommentModalWithInput(this)" post-no="<%= post[cur].post_no %>" user-id="<%= username %>"
+                        viewBox="0 0 24 24" width="24">
+                        <title>댓글 달기</title>
+                        <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z" fill="none" stroke="currentColor"
+                            stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                    <svg onclick="postShare(<%= post[cur].post_no %>)" aria-label="공유하기" class="share icon" id="<%= post[cur].post_no %>"
+                        height="24" role="img" viewBox="0 0 24 24" width="24">
+                        <title>공유하기</title>
+                        <line fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2" x1="22"
+                            x2="9.218" y1="3" y2="10.083"></line>
+                        <polygon fill="none" points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334"
+                            stroke="currentColor" stroke-linejoin="round" stroke-width="2"></polygon>
+                    </svg>
+                    <svg onclick="postStore(<%= post[cur].post_no %>)" aria-label="저장" fill="currentColor" height="24" role="img" class="icon"
+                        viewBox="0 0 24 24" width="24">
+                        <title>저장</title>
+                        <polygon fill="none" points="20 21 12 13.44 4 21 4 3 20 3 20 21" stroke="currentColor" class="store-<%= post[cur].post_no %> <% if(store.find(x=>x.post_no == post[cur].post_no)) { %> storeit <% } %>"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon>
+                    </svg>
+                </div>
+                <div class="item-like-count">
+                    좋아요 <span id="like-<%= post[cur].post_no %>"><%= post[cur].like %></span>개
+                </div>
+                <div class="item-description">
+                    <span class="nick"><%= userId %></span>
+                    <span class="description-text" post-no="<%= post[cur].post_no %>"><%= post_desc[i].description %></span>
+                </div>
+                <div class="item-comment item-link-gray open-modal" post-no="<%= post[cur].post_no %>" user-id="<%= username %>">
+                    <% if(post[cur].comments>0) { %>
+                        <span>댓글 <span id="comment-<%= post[cur].post_no %>"><%= post[cur].comments %></span>개 모두 보기</span>
+                    <% } else { %>
+                        <span>댓글 없음</span>
+                    <% } %>
+                </div>
+            </div> <!-- .item -->
+            <% } %>
+            <br><br><br><br>
+        </div>
+        <div class="modal-overlay" id="modal-overlay">
+            <div class="modal-background" id="modal-background"></div>
+            <div id="modal-content">
+                <div class="comment-modal-header">
+                    <hr class="hr1">
+                    <div class="comment-header">댓글</div>
+                    <hr class="hr2">
+                </div>
+            </div>
+
+            <div id="comment-update-modal">
+                <div id="error-text">댓글 수정</div>
+            </div>
+        </div>
+        <div id="error-modal">
+            <div id="error-text">로그인이 필요한 기능입니다.</div>
+        </div>
+<script>
+    
+</script>
+<script type="module" src="/createElement.js"></script>
+<script type="module" src="/post.js"></script>
+<script type="module" src="/window.js"></script>
+<script type="module" src="/modal.js"></script>
+<script type="module" src="/comment.js"></script>
+<%- include('footer') %>

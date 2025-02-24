@@ -1,0 +1,167 @@
+.user-page-main{
+    padding-top: 10px;
+    width: 100%;
+    min-height: 500px;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-id{
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 25px;
+    word-break: break-all;
+    text-overflow: ellipsis;
+}
+
+.user-page-profile{
+    width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.user-page-profile-img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+}
+.user-page-profile-img>img{
+    border-radius: 50px;
+    max-width: 200px;
+    max-height: 200px;
+}
+.user-page-content{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.user-page-content-div{
+    width: 70px;
+    height: 100px;
+    background-color: rgb(230, 230, 230);
+    box-shadow: 2px 2px 3px black;
+}
+.user-page-content-title{
+    text-align: center;
+    word-break: keep-all;
+    font-size: 12px;
+    font-weight: bolder;
+    width: 100%;
+    height: 30px;
+}
+
+.count-no{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.count-no:hover{
+    cursor: pointer;
+    text-decoration: underline solid rgb(0, 183, 255) 2px;
+}
+
+.list-modal{
+    display: block;
+    position: fixed;
+    width: 600px;
+    height: 400px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    transition: all 1s ease;
+    background-color: white;
+    border-radius: 50px;
+    box-shadow: 2px 20px 2px lightgrey;
+}
+.list-modal-div{
+    width: 100%;
+    height: 100%;
+}
+.list-modal-header{
+    width: 100%;
+    height: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+.list-modal-title{
+    position: relative;
+    left: 50px;
+    margin-top:5px;
+    margin-bottom: 5px;
+    font-weight: bolder;
+    font-size: 18px;
+    text-decoration: underline 2px black;
+}
+.list-modal-exit:hover{
+    cursor: pointer;
+    font-weight: bolder;
+}
+.list-modal-body{
+    width: 100%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    padding-right: 5px;
+}
+.list-ul{
+    height: 100%;
+    list-style-type: none;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.list-modal-body>ul::-webkit-scrollbar{
+    width: 5px;
+}
+.list-modal-body>ul::-webkit-scrollbar-button{
+    display: hidden;
+}
+.list-modal-body>ul::-webkit-scrollbar-track{
+    background-color: hidden;
+}
+.list-modal-body>ul::-webkit-scrollbar-thumb{
+    background-color: rgb(208, 212, 148);
+    border-radius: 50px;
+    width: 5px;
+}
+.li>li{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.li>li:hover{
+    cursor: pointer;
+    font-weight: bolder;
+    text-decoration: underline blue 2px;
+}
+
+.delete-div{
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+.delete{
+    font-size: 12px;
+    color: gray;
+}
+.delete:hover{
+    cursor: pointer;
+    font-weight: bolder;
+}
+.li{
+    width: 100%;
+    border-radius: 50px;
+}
+.deleted{
+    text-decoration: line-through solid red 3px;
+}
+.li-del{
+    background-color: rgba(211, 211, 211, 0.5);
+}

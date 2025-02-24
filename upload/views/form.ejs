@@ -1,0 +1,15 @@
+<%- include('header') %> <!-- header.ejs 파일이 포함된다. -->
+<div class="contents">
+    <form id="form" action="/posts" method="post" enctype="multipart/form-data">
+        <div>
+            <input type="file" name="imgs" class="input" multiple required>
+        </div>
+        <div>
+            <textarea name="description" rows="5" class="input"></textarea>
+        </div>
+        <div>
+            <button>등록</button>
+        </div>
+    </form>
+</div>
+<%- include('footer') %> <!-- footer.ejs 파일이 포함된다. -->

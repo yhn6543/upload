@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>댓글 수정</title>
+</head>
+<style>
+    .update-body{
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #comment-text{
+        width: 100%;
+        height: 250px;
+        display: flex;
+        resize: none;
+        text-align: center;
+    }
+</style>
+<body class="update-body" post-no="<%= postNo %>" comment-no="<%= commentNo %>" user-id="<%= userId %>">
+    <div>
+        댓글 수정하기
+    </div>
+    <div style="width: 100%; height: 300px">
+        <textarea name="comment-text" id="comment-text" cols="30" rows="10" placeholder="댓글 수정"></textarea>
+        <div style="width: 100%; display: flex; justify-content: end;">
+            <button onclick="fetchComment()">수정하기</button>
+        </div>
+    </div>
+
+</body>
+<script>
+    const textArea = document.getElementById("comment-text");
+    const body = document.querySelector(".update-body")
+    const postNo = body.getAttribute("post-no");
+    const commentNo = body.getAttribute("comment-no");
+    const userId = body.getAttribute("user-id");
+    const curComment = opener.document.getElementById("commentNo-"+commentNo);
+    console.log(curComment.textContent)
+    textArea.value = curComment.textContent
+
+    function fetchComment(){
+        fetch('/comments', {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ postNo: postNo, commentNo: commentNo, text: textArea.value })
+        })
+        .then(checkStatus)
+        .then(()=>{
+            window.opener.updateCommentModal(postNo, userId);
+            console.log("수정 완료");
+            window.close();
+        })
+        .catch(err=>{
+            console.log('put comment:', err);
+        })
+    }
+
+
+
+    async function checkStatus(res){
+        if(!res.ok) throw new Error(`Request failed with status: ${res.status}`);
+        try{
+            return await res.json();
+        }
+        catch{
+            return true;
+        }
+    }
+</script>
+</html>
