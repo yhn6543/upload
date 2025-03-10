@@ -1,6 +1,6 @@
 <%- include('header') %> <!-- header.ejs 파일이 포함된다. -->
 <div class="contents">
-    <form id="form" action="/users" method="post" enctype="multipart/form-data">
+    <form id="form" action="/user" method="post" enctype="multipart/form-data">
         <div>
             <input type="id" name="id" class="input" placeholder="ID" required>
         </div>
@@ -8,9 +8,9 @@
             <input type="password" name="pw" class="input" placeholder="PW" required>
         </div>
         <div>
-            <input type="file" name="profile" class="input" id="profile" style="padding: 0px;">
+            <input type="file" name="profile" class="input" id="profile">
         </div>
-        <div style="display: flex; justify-content: center;">
+        <div class="user-join-btn">
             <button>회원가입</button>
         </div>
     </form>

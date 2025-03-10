@@ -1,4 +1,4 @@
-import { createLi } from './createElement.js';
+import { createDiv, createLi, createSpan } from './createElement.js';
 import { closePostOption } from './post.js'
 
 
@@ -14,7 +14,7 @@ window.addEventListener("scroll", ()=>{
 
 
 function login(){
-    location.href = '/login';
+    location.href = '/user/login';
 }
 window.login = login;
 
@@ -22,7 +22,7 @@ window.login = login;
 
 
 function logout(){
-    fetch('/logout', {
+    fetch('/user/logout', {
         method: "POST",
         headers: {"Content-Type": "application/json"}
     })
@@ -69,7 +69,7 @@ window.scrollToPost = scrollToPost;
 
 
 function userProfile(element){
-    location.href = `/user-page/${element.getAttribute("user-id")}`;
+    location.href = `/user/page/${element.getAttribute("user-id")}`;
 }
 window.userProfile = userProfile;
 
@@ -100,7 +100,7 @@ serach.addEventListener("input", (e)=>{
 
 
 function setSerach(e){
-    fetch(`/search`, {
+    fetch(`/post/search`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ search: e.target.value })
@@ -119,12 +119,25 @@ function setSerach(e){
 
 function setSearchUl(data){
     searchUl.innerHTML = "";
-    if(!data)return;
-
-    data = data.userList;
-    data.forEach((each)=>{
-        const li = createLi({ textContent: each.id, onclick: `toProfile("${each}")` });
-        searchUl.appendChild(li);
+    if(!data) return;
+    
+    data.list.forEach((each)=>{
+        if(!each.no){
+            const li = createLi({ onclick: `toProfile("${each.id}")` });
+            const cat = createDiv({ className: "search-cat", textContent: "ID" });
+            const res = createDiv({ className: "search-res", textContent: each.id });
+            res.title = each.id;
+            li.append(res, cat);
+            searchUl.appendChild(li);
+        }
+        else{
+            const li = createLi({ onclick: `scrollToPost("${each.no}")` });
+            const cat = createDiv({ className: "search-cat", textContent: each.id });
+            const res = createDiv({ className: "search-res", textContent: each.description });
+            res.title = each.description;
+            li.append(res, cat);
+            searchUl.appendChild(li);
+        }
     })
 }
 
@@ -132,7 +145,7 @@ function setSearchUl(data){
 
 
 function toProfile(userId){
-    location.href = `/user-page/${userId}`;
+    location.href = `/user/page/${userId}`;
 }
 window.toProfile = toProfile;
 
@@ -195,7 +208,7 @@ window.myPage = myPage;
 
 
 function setMyPage(userId){
-    fetch(`/post-list/${userId}`, { method: "GET" })
+    fetch(`/post/list/${userId}`, { method: "GET" })
     .then(checkStatus)
     .then((res)=>{
         const list = document.getElementById("page-my-post-list");
@@ -236,7 +249,7 @@ window.openUserCommentList = openUserCommentList;
 
 function setUserCommentList(page, userId, timer){
     setTimeout(() => {
-        fetch(`/post-list/${userId}`, { method: "GET" })
+        fetch(`/post/list/${userId}`, { method: "GET" })
         .then(checkStatus)
         .then((res)=>{
             const id = document.querySelector(".page-user-id-text");

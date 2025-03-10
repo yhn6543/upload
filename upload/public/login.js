@@ -6,7 +6,7 @@ function login(){
 
 
 function logout(){
-    fetch('/logout', {
+    fetch('/user/logout', {
         method: "POST",
         headers: {"Content-Type": "application/json"}
     })

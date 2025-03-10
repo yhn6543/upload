@@ -50,7 +50,7 @@ window.openCommentModal = openCommentModal;
 async function openCommentModalWithInput(sourceElement){
     if(!sourceElement.getAttribute("user-id") && sourceElement.getAttribute("aria-label")){
         alert('로그인이 필요합니다.');
-        return location.href='/login';
+        return location.href='/user/login';
     }
     const res = await appendCommentToModal(sourceElement);
     
@@ -102,7 +102,7 @@ function uploadComment(postNo){
     const comment = document.getElementById("comment").value;
     document.getElementById("comment").value = "";
 
-    fetch('/comments', {
+    fetch('/comment', {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({postNo: postNo, userId: window.userId, comment: comment})
@@ -134,7 +134,7 @@ export function closeCommentModal(closeComment){
 
 
 function initComment(postNo){             // 댓글 창에 댓글들 표시
-    return fetch(`/comments/${postNo}`, { method: 'GET' })
+    return fetch(`/comment/${postNo}`, { method: 'GET' })
     .then(checkStatus)
     .then((res)=>{
         const commentModalBody = createDiv({ className: "comment-modal-body", id: "comment-modal-body" });

@@ -94,20 +94,49 @@ body::-webkit-scrollbar-thumb{
 }
 
 .search-ul{
+    overflow-x: hidden;
     width: 100%;
     list-style-type: none;
 }
 
+.search-result::-webkit-scrollbar{
+    width: 7px;
+}
+.search-result::-webkit-scrollbar-button{
+    display: none;
+}
+.search-result::-webkit-scrollbar-track{
+    width: 7px;
+}
+.search-result::-webkit-scrollbar-thumb{
+    width: 7px;
+    background-color: #aaaaaa;
+    border-radius: 50px;
+}
+
 .search-ul>li{
-    font-size: 15px;
-    overflow: hidden;
-    text-overflow: ellipsis;
     padding: 5px;
+    display: flex;
 }
 
 .search-ul>li:hover{
     cursor: pointer;
     background-color: #eeeeee;
+}
+
+
+
+.search-cat{
+    margin-left: 5px;
+    font-size: 9px;
+}
+
+
+.search-res{
+    max-width: 80%;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
@@ -940,3 +969,16 @@ body::-webkit-scrollbar-thumb{
 }
 
 
+.user-join-btn{
+    display: flex;
+    justify-content: center;
+}
+
+.user-login-btn{
+    display: flex;
+    justify-content: space-around;
+}
+
+.user-login-form{
+    padding-bottom: 10px;
+}

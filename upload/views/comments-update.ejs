@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>댓글 수정</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <style>
     .update-body{
@@ -19,6 +20,11 @@
         resize: none;
         text-align: center;
     }
+    .update-btn{
+        display: flex;
+        width: 100%;
+        justify-content: end;
+    }
 </style>
 <body class="update-body" post-no="<%= postNo %>" comment-no="<%= commentNo %>" user-id="<%= userId %>">
     <div>
@@ -26,7 +32,7 @@
     </div>
     <div style="width: 100%; height: 300px">
         <textarea name="comment-text" id="comment-text" cols="30" rows="10" placeholder="댓글 수정"></textarea>
-        <div style="width: 100%; display: flex; justify-content: end;">
+        <div class="update-btn">
             <button onclick="fetchComment()">수정하기</button>
         </div>
     </div>
@@ -39,11 +45,11 @@
     const commentNo = body.getAttribute("comment-no");
     const userId = body.getAttribute("user-id");
     const curComment = opener.document.getElementById("commentNo-"+commentNo);
-    console.log(curComment.textContent)
+    
     textArea.value = curComment.textContent
 
     function fetchComment(){
-        fetch('/comments', {
+        fetch('/comment', {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ postNo: postNo, commentNo: commentNo, text: textArea.value })

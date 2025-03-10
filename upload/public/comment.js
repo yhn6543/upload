@@ -3,7 +3,7 @@ import { closeCommentModal } from './modal.js';
 
 export function CLickCommentEmpathy(postNo, commentNo, e){
     if(e.className == "empathy-icon"){
-        fetch(`/comments/empathy/${commentNo}`, {  method: "POST" })
+        fetch(`/comment/empathy/${commentNo}`, {  method: "POST" })
         .then(checkStatus)
         .then(()=>{
             e.classList.toggle("empathizing");
@@ -14,7 +14,7 @@ export function CLickCommentEmpathy(postNo, commentNo, e){
         })
     }
     else{
-        fetch(`/comments/empathy/${commentNo}`, {  method: "DELETE" })
+        fetch(`/comment/empathy/${commentNo}`, {  method: "DELETE" })
         .then(checkStatus)
         .then(()=>{
             e.classList.toggle("empathizing");
@@ -58,7 +58,7 @@ window.commentUpdate = commentUpdate;
 
 
 function commentDelete(postNo, commentNo){
-    fetch("/comments", {
+    fetch("/comment", {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ postNo: postNo, commentNo: commentNo })
@@ -113,12 +113,12 @@ export function clickImgToPage(){
     const userIdSpan = document.querySelectorAll(".user-id-span");
     commentUserProfile.forEach((each)=>{
         each.addEventListener("click", (e)=>{
-            location.href = `/user-page/${each.id}`;
+            location.href = `/user/page/${each.id}`;
         })
     })
     userIdSpan.forEach((each)=>{
         each.addEventListener("click", (e)=>{
-            location.href = `/user-page/${each.id}`;
+            location.href = `/user/page/${each.id}`;
         })
     })
 }

@@ -21,10 +21,9 @@ function toPost(postNo){
 
 
 function delPost(element, postNo, userId){
-    // console.log(element.parentNode.parentNode, postNo, userId);
-    if(element.parentNode.parentNode.classList.contains("deleted")) alert("이미 삭제됨");
+    if(element.parentNode.parentNode.classList.contains("deleted")) return alert("이미 삭제됨");
 
-    fetch(`/posts`, {
+    fetch(`/post`, {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ postNo: postNo, userId: userId })
@@ -45,10 +44,9 @@ function delPost(element, postNo, userId){
 
 
 function delComment(element, postNo, commentNo){
-    // console.log(postNo, commentNo);
-    if(element.parentNode.parentNode.classList.contains("deleted")) alert("이미 삭제됨");
+    if(element.parentNode.parentNode.classList.contains("deleted")) return alert("이미 삭제됨");
 
-    fetch("/comments", {
+    fetch("/comment", {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ postNo: postNo, commentNo: commentNo })
@@ -69,10 +67,9 @@ function delComment(element, postNo, commentNo){
 
 
 function delLike(element, postNo){
-    // console.log(postNo);
-    if(element.parentNode.parentNode.classList.contains("deleted")) alert("이미 삭제됨");
+    if(element.parentNode.parentNode.classList.contains("deleted")) return alert("이미 삭제됨");
 
-    fetch('/post/like/' + postNo, {method:"DELETE"})
+    fetch(`/post/like/+${postNo}`, {method:"DELETE"})
     .then(checkStatus)
     .then(()=>{
         console.log("삭제 완료")
@@ -89,10 +86,9 @@ function delLike(element, postNo){
 
 
 function delEmpathy(element, commentNo){
-    // console.log(commentNo);
-    if(element.parentNode.parentNode.classList.contains("deleted")) alert("이미 삭제됨");
+    if(element.parentNode.parentNode.classList.contains("deleted")) return alert("이미 삭제됨");
 
-    fetch(`/comments/empathy/${commentNo}`, {  method: "DELETE" })
+    fetch(`/comment/empathy/${commentNo}`, {  method: "DELETE" })
     .then(checkStatus)
     .then(()=>{
         console.log("삭제 완료")
@@ -109,7 +105,7 @@ function delEmpathy(element, commentNo){
 
 
 function delStore(element, postNo){
-    if(element.parentNode.parentNode.classList.contains("deleted")) alert("이미 삭제됨");
+    if(element.parentNode.parentNode.classList.contains("deleted")) return alert("이미 삭제됨");
 
     fetch(`/post/store/${postNo}`, {  method: "DELETE" })
     .then(checkStatus)

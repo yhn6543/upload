@@ -4,13 +4,13 @@ import { loginErrorModal } from './modal.js';
 function postDelete(element){
     const postNo = element.getAttribute("post-no");
     const userId = element.getAttribute("user-id");
-    fetch(`/posts`, {
+    fetch(`/post`, {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ postNo: postNo, userId: userId })
     })
     .then(checkStatus)
-    .then((res)=>{
+    .then(()=>{
         location.reload();
     })
     .catch(err=>{
@@ -36,7 +36,7 @@ function postUpdate(element){
     const text = document.getElementById("update-text").value;
     const postNo = element.parentNode.parentNode.getAttribute("post-no");
 
-    fetch('/posts', {
+    fetch('/post', {
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ postNo: postNo, text: text })

@@ -1,3 +1,0 @@
-function view_comments(){
-    
-}
